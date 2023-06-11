@@ -43,16 +43,18 @@ class _TabsScreenState extends State<TabsScreen> {
     return _favoriteMeals.contains(meal);
   }
 
-  void _setScreen(String identifier) {
+  void _setScreen(String identifier) async {
     switch (identifier) {
       case 'filters':
         Navigator.of(context).pop();
 
-        Navigator.of(context).push(
+        var filters = await Navigator.of(context).push<Map<String, bool>>(
           MaterialPageRoute(
             builder: (ctx) => const FiltersScreen(),
           ),
         );
+
+        print(filters);
 
         break;
       default:
