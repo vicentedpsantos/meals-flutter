@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:meals/widgets/main_drawer.dart';
+
+import 'package:meals/screens/tabs.dart';
+
 class FiltersScreen extends StatefulWidget {
   const FiltersScreen({super.key});
 
@@ -16,7 +20,20 @@ class _FiltersScreenState extends State<FiltersScreen> {
   build(context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your filters'),
+        title: const Text('Your filters'),
+      ),
+      drawer: MainDrawer(
+        onSelectScreen: (identifier) {
+          Navigator.of(context).pop();
+
+          if (identifier == 'meals') {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => const TabsScreen(),
+              ),
+            );
+          }
+        },
       ),
       body: Column(
         children: [
