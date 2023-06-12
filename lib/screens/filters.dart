@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:meals/widgets/filter_tile.dart';
 
 class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key});
+  const FiltersScreen({super.key, required this.initialFilters});
+
+  final Map<String, bool> initialFilters;
 
   @override
   State<FiltersScreen> createState() {
@@ -12,16 +14,19 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  var filters = {
-    'glutten-free': false,
-    'lactose-free': false,
-    'vegetarian': false,
-    'vegan': false
-  };
+  Map<String, bool> currentFilters = {};
+
+  @override
+  void initState() {
+    currentFilters = {...widget.initialFilters};
+
+    super.initState();
+  }
 
   void _setFilterValue(String filterName, bool newValue) {
     setState(() {
-      filters[filterName] = newValue;
+
+      currentFilters[filterName] = newValue;
     });
   }
 
@@ -33,7 +38,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
       ),
       body: WillPopScope(
         onWillPop: () async {
-          Navigator.of(context).pop(filters);
+          Navigator.of(context).pop(currentFilters);
 
           return false;
         },
@@ -42,28 +47,28 @@ class _FiltersScreenState extends State<FiltersScreen> {
             FilterTile(
               description: 'Only include gluten-free meals',
               filterName: 'glutten-free',
-              isSet: false,
+              isSet: widget.initialFilters['glutten-free']!,
               setFilterValue: _setFilterValue,
               title: 'Glutten-free',
             ),
             FilterTile(
               description: 'Only include lactose-free meals.',
               filterName: 'lactose-free',
-              isSet: false,
+              isSet: widget.initialFilters['lactose-free']!,
               setFilterValue: _setFilterValue,
               title: 'Lactose-free',
             ),
             FilterTile(
               description: 'Only include vegetarian meals.',
               filterName: 'vegetarian',
-              isSet: false,
+              isSet: widget.initialFilters['vegetarian']!,
               setFilterValue: _setFilterValue,
               title: 'Vegetarian',
             ),
             FilterTile(
               description: 'Only include vegan meals.',
               filterName: 'vegan',
-              isSet: false,
+              isSet: widget.initialFilters['vegan']!,
               setFilterValue: _setFilterValue,
               title: 'Vegan',
             ),
