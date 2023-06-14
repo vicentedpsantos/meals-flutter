@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FilterTile extends StatefulWidget {
-  const FilterTile(
-      {super.key,
-      required this.title,
-      required this.description,
-      required this.isSet,
-      required this.filterName,
-      required this.setFilterValue});
+import 'package:meals/providers/filters_provider.dart';
+
+class FilterTile extends ConsumerStatefulWidget {
+  const FilterTile({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.filterName,
+  });
 
   final String title;
   final String description;
-  final String filterName;
-  final bool isSet;
-  final void Function(String filterName, bool isSet) setFilterValue;
+  final Filter filterName;
 
   @override
-  State<FilterTile> createState() => _FilterTileState();
+  ConsumerState<FilterTile> createState() => _FilterTileState();
 }
 
-class _FilterTileState extends State<FilterTile> {
+class _FilterTileState extends ConsumerState<FilterTile> {
   bool? isSet;
 
   @override
   void initState() {
-    isSet = widget.isSet;
+    isSet = ref.read(filtersProvider.notifier).isSet(widget.filterName);
 
     super.initState();
   }
@@ -37,7 +37,9 @@ class _FilterTileState extends State<FilterTile> {
         setState(() {
           isSet = !isSet!;
 
-          widget.setFilterValue(widget.filterName, isSet!);
+          ref
+              .read(filtersProvider.notifier)
+              .setFilter(widget.filterName, isSet!);
         });
       },
       title: Text(
