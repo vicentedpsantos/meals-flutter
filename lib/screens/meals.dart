@@ -8,14 +8,10 @@ class MealsScreen extends StatelessWidget {
   const MealsScreen(
       {super.key,
       this.title,
-      required this.meals,
-      required this.onToggleFavorite,
-      required this.isMealFavorite});
+      required this.meals,});
 
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavorite;
-  final bool Function(Meal meal) isMealFavorite;
 
   Widget buildMealsList(BuildContext ctx, int index) {
     return MealItem(
@@ -27,11 +23,7 @@ class MealsScreen extends StatelessWidget {
   void _selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => MealDetailsScreen(
-          meal: meal,
-          onToggleFavorite: onToggleFavorite,
-          isMealFavorite: isMealFavorite,
-        ),
+        builder: (ctx) => MealDetailsScreen(meal: meal),
       ),
     );
   }

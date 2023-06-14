@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals/models/meal.dart';
+import 'package:meals/providers/favorites_provider.dart';
 
-class MealDetailsScreen extends StatefulWidget {
-  const MealDetailsScreen(
-      {super.key,
-      required this.meal,
-      required this.onToggleFavorite,
-      required this.isMealFavorite});
+class MealDetailsScreen extends ConsumerStatefulWidget {
+  const MealDetailsScreen({super.key, required this.meal});
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFavorite;
-  final bool Function(Meal meal) isMealFavorite;
 
-  State<MealDetailsScreen> createState() {
+  @override
+  ConsumerState<MealDetailsScreen> createState() {
     return _MealDetailsScreenState();
   }
 }
 
-class _MealDetailsScreenState extends State<MealDetailsScreen> {
+class _MealDetailsScreenState extends ConsumerState<MealDetailsScreen> {
   bool? isFavorite;
 
   @override
   void initState() {
-    isFavorite = widget.isMealFavorite(widget.meal);
+    isFavorite =
+        ref.read(favoriteMealsNotifier.notifier).isMealFavorite(widget.meal);
 
     super.initState();
   }
@@ -33,11 +31,15 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
       isFavorite = !isFavorite!;
     });
 
-    widget.onToggleFavorite(widget.meal);
+    ref
+        .read(favoriteMealsNotifier.notifier)
+        .toggleMealFavoriteStatus(widget.meal);
   }
 
   @override
   Widget build(context) {
+    ref.watch(favoriteMealsNotifier);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
