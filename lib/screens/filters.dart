@@ -5,18 +5,9 @@ import 'package:meals/widgets/filter_list_tile.dart';
 import 'package:meals/providers/filters_provider.dart';
 import 'package:meals/models/filter.dart';
 
-class FiltersScreen extends ConsumerStatefulWidget {
-  const FiltersScreen({super.key});
-
+class FiltersScreen extends ConsumerWidget {
   @override
-  ConsumerState<FiltersScreen> createState() {
-    return _FiltersScreenState();
-  }
-}
-
-class _FiltersScreenState extends ConsumerState<FiltersScreen> {
-  @override
-  build(context) {
+  build(BuildContext context, WidgetRef ref) {
     Map<Filter, bool> filters = ref.watch(filtersProvider);
 
     return Scaffold(
