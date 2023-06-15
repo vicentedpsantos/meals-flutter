@@ -1,19 +1,26 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum Filter {
-  glutenFree,
-  lactoseFree,
-  vegetarian,
-  vegan,
-}
+import 'package:meals/models/filter.dart';
 
 class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
   FiltersNotifier()
       : super({
-          Filter.glutenFree: false,
-          Filter.lactoseFree: false,
-          Filter.vegetarian: false,
-          Filter.vegan: false
+          const Filter(
+              title: 'Gluten-free',
+              description: 'Only include gluten-free meals',
+              filterType: FilterType.glutenFree): false,
+          const Filter(
+              title: 'Lactose-free',
+              description: 'Only include lactose-free meals',
+              filterType: FilterType.lactoseFree): false,
+          const Filter(
+              title: 'Vegetarian',
+              description: 'Only include vegetarian meals',
+              filterType: FilterType.vegetarian): false,
+          const Filter(
+              title: 'Vegan',
+              description: 'Only include vegan meals',
+              filterType: FilterType.vegan): false,
         });
 
   void setFilter(Filter filter, bool isActive) {
@@ -25,6 +32,17 @@ class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
   }
 
   bool isSet(Filter filter) => state[filter]!;
+
+  bool getStatusByType(FilterType filterType) {
+    bool result = false;
+    state.forEach((k, v) {
+      if (k.filterType == filterType) {
+        result = v;
+      }
+    });
+
+    return result;
+  }
 }
 
 final filtersProvider =

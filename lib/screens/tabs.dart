@@ -7,6 +7,7 @@ import 'package:meals/providers/meals_provider.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/filters.dart';
 import 'package:meals/screens/meals.dart';
+import 'package:meals/models/filter.dart';
 import 'package:meals/widgets/main_drawer.dart';
 
 class TabsScreen extends ConsumerStatefulWidget {
@@ -52,19 +53,21 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     Map<Filter, bool> filters = ref.watch(filtersProvider);
 
     final availableMeals = meals.where((meal) {
-      if (filters[Filter.glutenFree]! && !meal.isGlutenFree) {
+      var notifier = ref.read(filtersProvider.notifier);
+
+      if (notifier.getStatusByType(FilterType.glutenFree) && !meal.isGlutenFree) {
         return false;
       }
 
-      if (filters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+      if (notifier.getStatusByType(FilterType.lactoseFree) && !meal.isLactoseFree) {
         return false;
       }
 
-      if (filters[Filter.vegetarian]! && !meal.isVegetarian) {
+      if (notifier.getStatusByType(FilterType.vegan) && !meal.isVegan) {
         return false;
       }
 
-      if (filters[Filter.vegan]! && !meal.isVegan) {
+      if (notifier.getStatusByType(FilterType.vegetarian) && !meal.isVegetarian) {
         return false;
       }
 
