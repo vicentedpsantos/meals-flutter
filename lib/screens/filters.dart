@@ -27,7 +27,13 @@ class _FiltersScreenState extends ConsumerState<FiltersScreen> {
         children: filters.keys
             .toList()
             .map(
-              (filter) => FilterListTile(filter: filter),
+              (filter) => FilterListTile(
+                filter: filter,
+                isSet: filters[filter]!,
+                onToggle: (filter) {
+                  ref.read(filtersProvider.notifier).toggleFilter(filter);
+                },
+              ),
             )
             .toList(),
       ),

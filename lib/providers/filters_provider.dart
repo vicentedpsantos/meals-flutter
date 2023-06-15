@@ -4,44 +4,49 @@ import 'package:meals/models/filter.dart';
 
 class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
   FiltersNotifier()
-      : super({
-          const Filter(
+      : super(
+          {
+            const Filter(
               title: 'Gluten-free',
               description: 'Only include gluten-free meals',
-              filterType: FilterType.glutenFree): false,
-          const Filter(
+              filterType: FilterType.glutenFree,
+            ): false,
+            const Filter(
               title: 'Lactose-free',
               description: 'Only include lactose-free meals',
-              filterType: FilterType.lactoseFree): false,
-          const Filter(
+              filterType: FilterType.lactoseFree,
+            ): false,
+            const Filter(
               title: 'Vegetarian',
               description: 'Only include vegetarian meals',
-              filterType: FilterType.vegetarian): false,
-          const Filter(
+              filterType: FilterType.vegetarian,
+            ): false,
+            const Filter(
               title: 'Vegan',
               description: 'Only include vegan meals',
-              filterType: FilterType.vegan): false,
-        });
-
-  void setFilter(Filter filter, bool isActive) {
-    state = {...state, filter: isActive};
-  }
-
-  void setFilters(Map<Filter, bool> filters) {
-    state = filters;
-  }
-
-  bool isSet(Filter filter) => state[filter]!;
+              filterType: FilterType.vegan,
+            ): false,
+          },
+        );
 
   bool getStatusByType(FilterType filterType) {
     bool result = false;
-    state.forEach((k, v) {
-      if (k.filterType == filterType) {
-        result = v;
-      }
-    });
+
+    state.forEach(
+      (k, v) {
+        if (k.filterType == filterType) {
+          result = v;
+        }
+      },
+    );
 
     return result;
+  }
+
+  void toggleFilter(Filter filter) {
+    bool currentFilterStatus = getStatusByType(filter.filterType);
+
+    state = {...state, filter: !currentFilterStatus};
   }
 }
 

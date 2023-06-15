@@ -1,48 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:meals/providers/filters_provider.dart';
 import 'package:meals/models/filter.dart';
 
-class FilterListTile extends ConsumerStatefulWidget {
-  const FilterListTile({ super.key, required this.filter, });
+class FilterListTile extends StatelessWidget {
+  const FilterListTile(
+      {super.key,
+      required this.isSet,
+      required this.filter,
+      required this.onToggle});
 
   final Filter filter;
-  @override
-  ConsumerState<FilterListTile> createState() => _FilterListTileState();
-}
-
-class _FilterListTileState extends ConsumerState<FilterListTile> {
-  bool? isSet;
-
-  @override
-  void initState() {
-    isSet = ref.read(filtersProvider.notifier).isSet(widget.filter);
-
-    super.initState();
-  }
+  final bool isSet;
+  final void Function(Filter filter) onToggle;
 
   @override
   Widget build(context) {
     return SwitchListTile(
-      value: isSet!,
+      value: isSet,
       onChanged: (newValue) {
-        setState(() {
-          isSet = !isSet!;
-
-          ref
-              .read(filtersProvider.notifier)
-              .setFilter(widget.filter, isSet!);
-        });
+        onToggle(filter);
       },
       title: Text(
-        widget.filter.title,
+        filter.title,
         style: Theme.of(context).textTheme.titleLarge!.copyWith(
               color: Theme.of(context).colorScheme.onBackground,
             ),
       ),
       subtitle: Text(
-        widget.filter.description,
+        filter.description,
         style: Theme.of(context).textTheme.labelMedium!.copyWith(
               color: Theme.of(context).colorScheme.onBackground,
             ),
