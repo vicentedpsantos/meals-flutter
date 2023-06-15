@@ -50,7 +50,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     final meals = ref.watch(mealsProvider);
-    Map<Filter, bool> filters = ref.watch(filtersProvider);
+    ref.watch(filtersProvider);
 
     final availableMeals = meals.where((meal) {
       var notifier = ref.read(filtersProvider.notifier);
